@@ -16,5 +16,6 @@ a {
 }
 
 .emoji {
+  display: inline;
   width: 1em;
 }

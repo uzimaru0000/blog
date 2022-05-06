@@ -4,7 +4,6 @@ import { PageObject } from '../lib/notion/types';
 import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { Twemoji } from '../components/Twemoji';
 import { EntryLink } from '../components/EntryLink';
-import twemoji from 'twemoji';
 import { GetStaticProps } from 'next';
 
 type Props = {
@@ -31,7 +30,6 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     props: {
       pages: data,
     },
-    revalidate: 60,
   };
 };
 
