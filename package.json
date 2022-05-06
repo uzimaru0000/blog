@@ -1,6 +1,6 @@
 {
   "name": "blog-new",
-  "private": true,
+  "version": "0.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
