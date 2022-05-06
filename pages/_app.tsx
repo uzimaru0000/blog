@@ -1,8 +1,8 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { config } from '../lib/theme';
+import '../styles/globals.css';
 
-const colors = {};
-
-const theme = extendTheme(colors);
+const theme = extendTheme({ config });
 
 function MyApp({ Component, pageProps }) {
   return (

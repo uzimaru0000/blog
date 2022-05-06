@@ -1,22 +1,29 @@
+import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { BlockObject } from '../../lib/notion/types';
 import { RichText } from './RichText';
+import styled from '@emotion/styled';
 
-export const Toggle =
-  (Renderer: React.VFC<BlockObject>): React.VFC<BlockObject> =>
-  (props) => {
+export const Toggle = (
+  Renderer: React.VFC<{ block: BlockObject }>
+): React.VFC<BlockObject> =>
+  React.memo(function ToggleRenderer(props) {
     if (props.type !== 'toggle') {
       return null;
     }
 
     return (
-      <details>
+      <Details>
         <RichText as="summary" richText={props.toggle.text} />
         <Box paddingLeft="1.5em">
           {props.children?.map((x) => (
-            <Renderer {...x} />
+            <Renderer key={x.id} block={x} />
           ))}
         </Box>
-      </details>
+      </Details>
     );
-  };
+  });
+
+const Details = styled.details`
+  width: 100%;
+`;

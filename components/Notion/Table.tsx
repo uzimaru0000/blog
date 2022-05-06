@@ -65,11 +65,11 @@ const TableRow: React.VFC<BlockObject & { has_row_header: boolean }> = ({
     <Tr>
       {props.table_row.cells.map((x, i) =>
         i === 0 && has_row_header ? (
-          <Th bg="gray.50">
+          <Th key={`${props.id}-${i}`} bg="gray.50">
             <RichText richText={x} />
           </Th>
         ) : (
-          <Td>
+          <Td key={`${props.id}-${i}`}>
             <RichText richText={x} />
           </Td>
         )

@@ -1,5 +1,5 @@
 import type { BlockObject } from '../../lib/notion/types';
-import { Heading, Image, List, ListItem, Text } from '@chakra-ui/react';
+import { Heading, Image, List, ListItem, VStack } from '@chakra-ui/react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokai } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { Table } from './Table';
@@ -8,11 +8,15 @@ import { Quote } from './Quote';
 import { CallOut } from './CallOut';
 import { RichText } from './RichText';
 
-export const Notion: React.FC<BlockObject> = (block) => {
+export type Props = {
+  block: BlockObject;
+  opts?: Record<string, string | number | boolean>;
+};
+export const Notion: React.FC<Props> = ({ block, opts }) => {
   switch (block.type) {
     case 'heading_1': {
       return (
-        <Heading as="h1" size="2xl" isTruncated>
+        <Heading as="h1" size="4xl" isTruncated>
           <RichText richText={block.heading_1.text} />
         </Heading>
       );
@@ -36,7 +40,7 @@ export const Notion: React.FC<BlockObject> = (block) => {
     }
     case 'image': {
       return (
-        <>
+        <VStack spacing="0" w="full" alignItems="start">
           <Image
             src={
               block.image.type === 'external'
@@ -45,48 +49,93 @@ export const Notion: React.FC<BlockObject> = (block) => {
             }
             alt={block.image.caption.map((x) => x.plain_text).join(' ')}
           />
-          <Heading as="h6" size="xs">
-            <RichText richText={block.image.caption} />
-          </Heading>
-        </>
+          {block.image.caption.length !== 0 && (
+            <Heading as="h6" size="xs">
+              <RichText richText={block.image.caption} />
+            </Heading>
+          )}
+        </VStack>
       );
     }
     case 'bulleted_list': {
+      const nested = (opts?.nested as number) || 1;
+      const listStyle = {
+        [0]: 'square',
+        [1]: 'disc',
+        [2]: 'circle',
+      };
+
       return (
-        <List listStyleType="disc" paddingLeft="1.5em">
+        <List
+          listStyleType={[listStyle[nested % 3]]}
+          paddingLeft="1.5em"
+          w="full"
+        >
           {block.bulleted_list.map((x) => (
-            <Notion key={x.id} {...x} />
+            <Notion key={x.id} block={x} opts={{ nested }} />
           ))}
         </List>
       );
     }
     case 'bulleted_list_item': {
+      const nested = (opts?.nested as number) || 1;
+
       return (
         <ListItem>
           <RichText richText={block.bulleted_list_item.text} />
+          {block.children &&
+            block.children.map((x) => (
+              <Notion key={x.id} block={x} opts={{ nested: nested + 1 }} />
+            ))}
         </ListItem>
       );
     }
     case 'numbered_list': {
+      const nested = (opts?.nested as number) || 1;
+      const listStyle = {
+        [0]: 'lower-roman',
+        [1]: 'decimal',
+        [2]: 'lower-alpha',
+      };
+
       return (
-        <List as="ol" listStyleType="decimal" paddingLeft="1.5em">
+        <List
+          as="ol"
+          listStyleType={listStyle[nested % 3]}
+          paddingLeft="1.5em"
+          w="full"
+        >
           {block.numbered_list.map((x) => (
-            <Notion key={x.id} {...x} />
+            <Notion key={x.id} block={x} opts={{ nested }} />
           ))}
         </List>
       );
     }
     case 'numbered_list_item': {
+      const nested = (opts?.nested as number) || 1;
+
       return (
         <ListItem>
           <RichText richText={block.numbered_list_item.text} />
+          {block.children &&
+            block.children.map((x) => (
+              <Notion key={x.id} block={x} opts={{ nested: nested + 1 }} />
+            ))}
         </ListItem>
       );
     }
     case 'code': {
       return (
-        <>
-          <SyntaxHighlighter language={block.code.language} style={monokai}>
+        <VStack spacing="0" w="full" alignItems="start">
+          <SyntaxHighlighter
+            customStyle={{
+              width: '100%',
+              padding: '2rem',
+              borderRadius: '8px',
+            }}
+            language={block.code.language}
+            style={monokai}
+          >
             {block.code.text.map((x) => x.plain_text)}
           </SyntaxHighlighter>
           {block.code.caption.length !== 0 && (
@@ -94,7 +143,7 @@ export const Notion: React.FC<BlockObject> = (block) => {
               <RichText richText={block.code.caption} />
             </Heading>
           )}
-        </>
+        </VStack>
       );
     }
     case 'table': {

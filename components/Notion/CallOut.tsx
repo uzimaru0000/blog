@@ -1,28 +1,28 @@
 import { Alert, Box, HStack, Image } from '@chakra-ui/react';
-import { BlockObject } from '../../lib/notion/types';
+import { BlockObject, Color } from '../../lib/notion/types';
 import { RichText } from './RichText';
-import twemoji from 'twemoji';
+import { Twemoji } from '../Twemoji';
+import { isBGColor, toBGColor, toColor } from '../../lib/notion';
 
 export const CallOut: React.VFC<BlockObject> = (props) => {
   if (props.type !== 'callout') {
     return null;
   }
-
-  const codePoint = twemoji.convert.toCodePoint(
-    props.callout.icon.type === 'emoji' ? props.callout.icon.emoji : ''
-  );
+  const color = (props.callout as unknown as { color: Color }).color;
+  const bg = isBGColor(color) ? color.match(/(.+)_background/)[1] : undefined;
 
   return (
-    <Alert colorScheme="gray">
+    <Alert
+      bgColor={bg ? toBGColor(bg) : 'transparent'}
+      color={!bg && toColor(color)}
+      borderWidth="1px"
+      borderColor={!bg && 'gray.500'}
+      rounded="4px"
+    >
       <HStack spacing="1">
         <Box>
           {props.callout.icon.type === 'emoji' ? (
-            <Image
-              src={`https://twemoji.maxcdn.com/v/latest/svg/${
-                codePoint.split('-')[0]
-              }.svg`}
-              width="1em"
-            />
+            <Twemoji emoji={props.callout.icon.emoji} width="1em" />
           ) : null}
         </Box>
         <RichText richText={props.callout.text} />

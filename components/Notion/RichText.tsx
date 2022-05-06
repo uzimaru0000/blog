@@ -1,4 +1,6 @@
-import { As, Box, Text as ChakraText } from '@chakra-ui/react';
+import { chakra, As, Box, Text as ChakraText } from '@chakra-ui/react';
+import twemoji from 'twemoji';
+import { isBGColor, toBGColor, toColor } from '../../lib/notion';
 import { RichText as RichTextType } from '../../lib/notion/types';
 
 export const RichText: React.VFC<{ richText: RichTextType[]; as?: As }> = ({
@@ -7,8 +9,8 @@ export const RichText: React.VFC<{ richText: RichTextType[]; as?: As }> = ({
 }) => {
   return (
     <Box as={as}>
-      {richText.map((x) => (
-        <Text key={x.href} {...x} />
+      {richText.map((x, i) => (
+        <Text key={`${i}-${x.plain_text}`} {...x} />
       ))}
     </Box>
   );
@@ -26,51 +28,35 @@ const Text: React.VFC<RichTextType> = ({ annotations, ...props }) => {
     <ChakraText
       as="span"
       fontWeight={bold && 'bold'}
-      color={toColor(color)}
-      bgColor={toBGColor(bg)}
+      color={toColor(color) ? toColor(color) : code ? 'red.600' : undefined}
+      bgColor={toBGColor(bg) ? toBGColor(bg) : code ? 'gray.100' : undefined}
       fontStyle={italic && 'italic'}
       textDecoration={[
         strikethrough && 'line-through',
         underline && 'underline',
       ].filter(Boolean)}
+      padding={code && '1'}
+      rounded={code && '4px'}
     >
-      {props.text.content}
+      {code ? props.text.content : <InlineTwemoji text={props.text.content} />}
     </ChakraText>
   );
 };
 
-const isBGColor = (color: RichTextType['annotations']['color']) => {
-  return /(.+)_background/.test(color);
-};
+const InlineTwemoji: React.VFC<{ text: string }> = ({ text }) => {
+  const parsed = twemoji.parse(text, {
+    folder: 'svg',
+    ext: '.svg',
+  });
+  if (text.length === parsed.length) {
+    return <>{text}</>;
+  }
 
-const toColor = (color: string) => {
-  const colorSet = {
-    red: 'red.500',
-    blue: 'blue.500',
-    green: 'green.500',
-    gray: 'gray.500',
-    brown: 'orange.700',
-    orange: 'orange.500',
-    yellow: 'yellow.500',
-    purple: 'purple.500',
-    pink: 'pink.500',
-  };
-
-  return colorSet[color];
-};
-
-const toBGColor = (color: string) => {
-  const colorSet = {
-    red: 'red.100',
-    blue: 'blue.100',
-    green: 'green.100',
-    gray: 'gray.100',
-    brown: '#e4d6d0',
-    orange: 'orange.100',
-    yellow: 'yellow.100',
-    purple: 'purple.100',
-    pink: 'pink.100',
-  };
-
-  return colorSet[color];
+  return (
+    <chakra.span
+      display="inline-flex"
+      alignItems="center"
+      dangerouslySetInnerHTML={{ __html: parsed }}
+    />
+  );
 };
