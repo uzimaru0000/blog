@@ -52,11 +52,5 @@ const InlineTwemoji: React.VFC<{ text: string }> = ({ text }) => {
     return <>{text}</>;
   }
 
-  return (
-    <chakra.span
-      display="inline-flex"
-      alignItems="center"
-      dangerouslySetInnerHTML={{ __html: parsed }}
-    />
-  );
+  return <chakra.span dangerouslySetInnerHTML={{ __html: parsed }} />;
 };
