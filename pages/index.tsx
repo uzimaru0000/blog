@@ -5,12 +5,13 @@ import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { Twemoji } from '../components/Twemoji';
 import { EntryLink } from '../components/EntryLink';
 import twemoji from 'twemoji';
+import { GetStaticProps } from 'next';
 
 type Props = {
   pages: PageObject[];
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<Props> = async () => {
   const data = await getPages({
     sorts: [
       {
@@ -30,8 +31,9 @@ export async function getStaticProps() {
     props: {
       pages: data,
     },
+    revalidate: 60,
   };
-}
+};
 
 export default function Home({ pages }: Props) {
   return (
