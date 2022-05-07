@@ -4,13 +4,13 @@ import { PageObject } from '../lib/notion/types';
 import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { Twemoji } from '../components/Twemoji';
 import { EntryLink } from '../components/EntryLink';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 
 type Props = {
   pages: PageObject[];
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const data = await getPages({
     sorts: [
       {

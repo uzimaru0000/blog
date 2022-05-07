@@ -7,7 +7,7 @@ import {
   Link,
   HStack,
 } from '@chakra-ui/react';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { EntryLink } from '../../components/EntryLink';
 import { Head, OGTag } from '../../components/Head';
 import { Twemoji } from '../../components/Twemoji';
@@ -20,14 +20,9 @@ type Props = {
   tag: string;
 };
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
-};
-
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  params,
+}) => {
   const tag = Array.isArray(params.tag) ? params.tag[0] : params.tag;
   const pages = await getPages({
     sorts: [
