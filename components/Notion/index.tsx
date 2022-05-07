@@ -1,5 +1,12 @@
 import type { BlockObject } from '../../lib/notion/types';
-import { Heading, Image, List, ListItem, VStack } from '@chakra-ui/react';
+import {
+  chakra,
+  Heading,
+  Image,
+  List,
+  ListItem,
+  VStack,
+} from '@chakra-ui/react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokai } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { Table } from './Table';
@@ -158,8 +165,17 @@ export const Notion: React.FC<Props> = ({ block, opts }) => {
     case 'callout': {
       return <CallOut {...block} />;
     }
+    case 'divider': {
+      return (
+        <chakra.hr
+          w="full"
+          style={{ marginTop: '1em', marginBottom: '1em' }}
+          my="1em"
+        />
+      );
+    }
     default: {
-      return <>not implements</>;
+      return null;
     }
   }
 };
