@@ -30,7 +30,7 @@ import {
 import type { BlockObject, PageObject } from '../lib/notion/types';
 import { Twemoji } from '../components/Twemoji';
 import { Footer } from '../components/Footer';
-import { Head } from '../components/Head';
+import { Head, OGTag } from '../components/Head';
 import { FaGetPocket, FaTwitter } from 'react-icons/fa';
 import { hatena, pocket, twitter } from '../lib/share';
 
@@ -77,6 +77,11 @@ const Page: NextPage<Props> = ({ page, content }) => {
           (x) => x.plain_text
         )} - uzimaru's blog`}</title>
       </Head>
+      <OGTag
+        title={`${title.title.map((x) => x.plain_text)}`}
+        url={`https://blog.uzimaru.com/${page.id}`}
+        type="article"
+      />
       {cover && (
         <Box
           bgImage={
