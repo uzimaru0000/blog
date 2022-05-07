@@ -26,6 +26,9 @@ export const EntryLink: React.VFC<Props> = ({ page }) => {
   return (
     <LinkBox
       w="full"
+      borderLeftColor="green.300"
+      borderLeftWidth={['4px', '4px', '4px', '0']}
+      borderRadius="4px"
       _hover={{
         backgroundColor: 'gray.100',
       }}
@@ -44,7 +47,7 @@ export const EntryLink: React.VFC<Props> = ({ page }) => {
             )}
           </LinkOverlay>
         </NextLink>
-        <HStack>
+        <Stack direction={['column', 'column', 'column', 'row']}>
           {tags && (
             <HStack>
               {tags.multi_select.map((x) => (
@@ -74,7 +77,7 @@ export const EntryLink: React.VFC<Props> = ({ page }) => {
               </HStack>
             )}
           </HStack>
-        </HStack>
+        </Stack>
       </Stack>
     </LinkBox>
   );

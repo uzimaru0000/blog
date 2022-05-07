@@ -16,14 +16,14 @@ export const Notion: React.FC<Props> = ({ block, opts }) => {
   switch (block.type) {
     case 'heading_1': {
       return (
-        <Heading as="h1" size="4xl" isTruncated>
+        <Heading as="h1" size="4xl">
           <RichText richText={block.heading_1.text} />
         </Heading>
       );
     }
     case 'heading_2': {
       return (
-        <Heading as="h2" size="xl" isTruncated>
+        <Heading as="h2" size="xl">
           <RichText richText={block.heading_2.text} />
         </Heading>
       );

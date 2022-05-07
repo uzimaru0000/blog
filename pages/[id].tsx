@@ -2,6 +2,7 @@ import {
   Box,
   Center,
   Container,
+  Flex,
   HStack,
   Icon,
   Image,
@@ -89,10 +90,12 @@ const Page: NextPage<Props> = ({ page, content }) => {
           top="0"
         />
       )}
-      <VStack spacing="8">
+      <Flex direction="column">
         <Box zIndex="1" bg="white" w="full" py="8">
-          <Container maxWidth={['0em', '30em', '30em', '62em', '62em', '96em']}>
-            <VStack alignItems="start" spacing="8">
+          <Container
+            maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}
+          >
+            <VStack alignItems="start" spacing="8" w="full">
               <VStack alignItems="start" spacing="2">
                 {title && (
                   <Box fontSize="5xl">
@@ -131,7 +134,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
                   </HStack>
                 )}
               </VStack>
-              <VStack alignItems="start">
+              <VStack alignItems="start" w="full">
                 {content.map((x) => (
                   <Notion key={x.id} block={x} />
                 ))}
@@ -139,7 +142,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
             </VStack>
           </Container>
         </Box>
-        <Center>
+        <Center pt="8">
           <VStack>
             <HStack spacing="4">
               <Link
@@ -205,8 +208,8 @@ const Page: NextPage<Props> = ({ page, content }) => {
             </NextLink>
           </VStack>
         </Center>
-        <Footer />
-      </VStack>
+        <Footer mt="8" />
+      </Flex>
     </Box>
   );
 };

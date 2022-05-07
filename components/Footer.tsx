@@ -1,6 +1,6 @@
-import { Center, HStack, Link, Text } from '@chakra-ui/react';
+import { Center, HStack, Link, StackProps, Text } from '@chakra-ui/react';
 
-export const Footer = () => {
+export const Footer: React.VFC<StackProps> = (props) => {
   return (
     <HStack
       as="footer"
@@ -8,6 +8,7 @@ export const Footer = () => {
       w="full"
       h="10rem"
       justifyContent="center"
+      {...props}
     >
       <Center>
         <Text whiteSpace="break-spaces">© 2022 </Text>

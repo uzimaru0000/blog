@@ -69,7 +69,7 @@ const Tags: NextPage<Props> = ({ pages, tag }) => {
         <title>{`${tag} - uzimaru's blog`}</title>
         <meta name="description" content={`${tag} がついた記事の一覧`} />
       </Head>
-      <Container maxWidth={['0em', '30em', '30em', '62em', '62em', '96em']}>
+      <Container maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}>
         <NextLink href="/">
           <Link>
             <HStack>

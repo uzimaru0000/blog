@@ -37,7 +37,7 @@ export default function Home({ pages }: Props) {
   return (
     <Box paddingY="8">
       <Head />
-      <Container maxWidth={['0em', '30em', '30em', '62em', '62em', '96em']}>
+      <Container maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}>
         <VStack alignItems="start" spacing="8">
           <Heading
             as="h1"

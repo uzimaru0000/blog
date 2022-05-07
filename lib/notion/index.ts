@@ -106,7 +106,7 @@ const reduceList = (blocks: BlockObject[]): BlockObject[] => {
             type: 'bulleted_list',
             bulleted_list: [...acc.stack],
             has_children: false,
-            id: Date.now().toString(),
+            id: acc.stack.map((x) => x.id.slice(0, 3)).join('-'),
           });
           acc.stack = [];
           acc.isUnorderList = false;
@@ -123,7 +123,7 @@ const reduceList = (blocks: BlockObject[]): BlockObject[] => {
             type: 'numbered_list',
             numbered_list: [...acc.stack],
             has_children: false,
-            id: Date.now().toString(),
+            id: acc.stack.map((x) => x.id.slice(0, 3)).join('-'),
           });
           acc.stack = [];
           acc.isOrderList = false;
@@ -163,7 +163,7 @@ const reduceList = (blocks: BlockObject[]): BlockObject[] => {
               type: 'bulleted_list' as const,
               bulleted_list: stack,
               has_children: false,
-              id: Date.now().toString(),
+              id: stack.map((x) => x.id.slice(0, 3)).join('-'),
             },
           ]
         : [
@@ -171,7 +171,7 @@ const reduceList = (blocks: BlockObject[]): BlockObject[] => {
               type: 'numbered_list' as const,
               numbered_list: stack,
               has_children: false,
-              id: Date.now().toString(),
+              id: stack.map((x) => x.id.slice(0, 3)).join('-'),
             },
           ]
       : [];
