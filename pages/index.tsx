@@ -1,4 +1,4 @@
-import { Head } from '../components/Head';
+import { Head, OGTag } from '../components/Head';
 import { getPages } from '../lib/notion';
 import { PageObject } from '../lib/notion/types';
 import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
@@ -37,6 +37,7 @@ export default function Home({ pages }: Props) {
   return (
     <Box paddingY="8">
       <Head />
+      <OGTag />
       <Container maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}>
         <VStack alignItems="start" spacing="8">
           <Heading

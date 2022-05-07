@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { EntryLink } from '../../components/EntryLink';
-import { Head } from '../../components/Head';
+import { Head, OGTag } from '../../components/Head';
 import { Twemoji } from '../../components/Twemoji';
 import { getPages } from '../../lib/notion';
 import { PageObject } from '../../lib/notion/types';
@@ -69,6 +69,7 @@ const Tags: NextPage<Props> = ({ pages, tag }) => {
         <title>{`${tag} - uzimaru's blog`}</title>
         <meta name="description" content={`${tag} がついた記事の一覧`} />
       </Head>
+      <OGTag />
       <Container maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}>
         <NextLink href="/">
           <Link>
