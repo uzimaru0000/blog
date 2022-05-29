@@ -14,6 +14,7 @@ import { Toggle } from './Toggle';
 import { Quote } from './Quote';
 import { CallOut } from './CallOut';
 import { RichText } from './RichText';
+import { Embed } from './Embed';
 
 export type Props = {
   block: BlockObject;
@@ -173,6 +174,9 @@ export const Notion: React.FC<Props> = ({ block, opts }) => {
           my="1em"
         />
       );
+    }
+    case 'embed': {
+      return <Embed {...block} />;
     }
     default: {
       return null;
