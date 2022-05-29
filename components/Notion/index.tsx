@@ -23,21 +23,21 @@ export const Notion: React.FC<Props> = ({ block, opts }) => {
   switch (block.type) {
     case 'heading_1': {
       return (
-        <Heading as="h1" size="4xl">
+        <Heading as="h1" size="4xl" pt="2.5">
           <RichText richText={block.heading_1.text} />
         </Heading>
       );
     }
     case 'heading_2': {
       return (
-        <Heading as="h2" size="xl">
+        <Heading as="h2" size="xl" pt="2">
           <RichText richText={block.heading_2.text} />
         </Heading>
       );
     }
     case 'heading_3': {
       return (
-        <Heading as="h3" size="lg">
+        <Heading as="h3" size="lg" pt="1.5">
           <RichText richText={block.heading_3.text} />
         </Heading>
       );
@@ -143,7 +143,7 @@ export const Notion: React.FC<Props> = ({ block, opts }) => {
             language={block.code.language}
             style={monokai}
           >
-            {block.code.text.map((x) => x.plain_text)}
+            {block.code.text.map((x) => x.plain_text).join('')}
           </SyntaxHighlighter>
           {block.code.caption.length !== 0 && (
             <Heading as="h6" size="xs">
