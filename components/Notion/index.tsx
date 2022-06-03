@@ -145,7 +145,7 @@ export const Notion: React.FC<Props> = ({ block, opts }) => {
             style={monokai}
           >
             {block.code.text
-              .map(x => x.plain_text.replaceAll("\t", "  "))
+              .map(x => x.plain_text.replace(/\t/g, "  "))
               .join("")}
           </SyntaxHighlighter>
           {block.code.caption.length !== 0 && (
