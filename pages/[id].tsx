@@ -16,7 +16,13 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import NextLink from 'next/link';
 import { Notion } from '../components/Notion';
 import { RichText } from '../components/Notion/RichText';
-import { getBlocks, getPage, toBGColor, useProperty } from '../lib/notion';
+import {
+  getBlocks,
+  getPage,
+  getPages,
+  toBGColor,
+  useProperty,
+} from '../lib/notion';
 import type { BlockObject, PageObject } from '../lib/notion/types';
 import { Twemoji } from '../components/Twemoji';
 import { Footer } from '../components/Footer';
@@ -29,9 +35,24 @@ type Props = {
   content: BlockObject[];
 };
 
-export const getStaticPaths: GetStaticPaths = () => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  const data = await getPages({
+    sorts: [
+      {
+        property: 'Created',
+        direction: 'descending',
+      },
+    ],
+    filter: {
+      property: 'Publish',
+      checkbox: {
+        equals: true,
+      },
+    },
+  });
+
   return {
-    paths: [],
+    paths: data.map((x) => `/${x.id}`),
     fallback: 'blocking',
   };
 };
