@@ -23,6 +23,7 @@
     "twemoji": "^14.0.2"
   },
   "devDependencies": {
+    "@types/gtag.js": "^0.0.10",
     "@types/react": "^17.0.38",
     "@types/react-syntax-highlighter": "^15.5.1",
     "eslint": "8.6.0",
