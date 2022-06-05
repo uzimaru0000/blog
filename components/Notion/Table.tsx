@@ -33,6 +33,9 @@ export const Table: React.VFC<BlockObject> = (props) => {
               <TableHeader
                 key={`${head.id}-${i}`}
                 bg={props.table.has_column_header && 'gray.50'}
+                _dark={{
+                  bg: props.table.has_column_header && 'gray.900',
+                }}
               >
                 <RichText richText={x} />
               </TableHeader>
@@ -65,7 +68,13 @@ const TableRow: React.VFC<BlockObject & { has_row_header: boolean }> = ({
     <Tr>
       {props.table_row.cells.map((x, i) =>
         i === 0 && has_row_header ? (
-          <Th key={`${props.id}-${i}`} bg="gray.50">
+          <Th
+            key={`${props.id}-${i}`}
+            bg="gray.50"
+            _dark={{
+              bg: 'gray.900',
+            }}
+          >
             <RichText richText={x} />
           </Th>
         ) : (

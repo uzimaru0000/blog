@@ -1,9 +1,17 @@
-import { chakra, As, Box, Text as ChakraText, Link } from '@chakra-ui/react';
+import {
+  chakra,
+  As,
+  Box,
+  Text as ChakraText,
+  Link,
+  TextProps,
+} from '@chakra-ui/react';
 import twemoji from 'twemoji';
 import { isBGColor, toBGColor, toColor } from '../../lib/notion';
 import { RichText as RichTextType } from '../../lib/notion/types';
 import NextLink from 'next/link';
 import { Twemoji } from '../Twemoji';
+import { AnchorHTMLAttributes } from 'react';
 
 export const RichText: React.VFC<{ richText: RichTextType[]; as?: As }> = ({
   richText,
@@ -29,11 +37,14 @@ const Text: React.VFC<RichTextType> = ({ annotations, ...props }) => {
 
   const { bold, code, strikethrough, color, italic, underline } = annotations;
   const bg = isBGColor(color) ? color.match(/(.+)_background/)[1] : undefined;
-  const linkProps = {
+  const linkProps: TextProps & AnchorHTMLAttributes<HTMLAnchorElement> = {
     as: 'a' as const,
     href: props.text.link?.url,
     color: 'blue.700',
     textDecoration: 'underline',
+    _dark: {
+      color: 'blue.300',
+    },
   };
 
   return (
@@ -49,6 +60,14 @@ const Text: React.VFC<RichTextType> = ({ annotations, ...props }) => {
       ].filter(Boolean)}
       padding={code && '1'}
       rounded={code && '4px'}
+      _dark={{
+        color: toBGColor(color)
+          ? toBGColor(color)
+          : code
+          ? 'red.600'
+          : undefined,
+        bgColor: toColor(bg) ? toColor(bg) : code ? 'gray.300' : undefined,
+      }}
       {...(props.text.link ? linkProps : {})}
     >
       {code ? props.text.content : <InlineTwemoji text={props.text.content} />}

@@ -13,6 +13,10 @@ export const Quote: React.VFC<BlockObject> = (props) => {
       borderLeftWidth="4px"
       borderLeftColor="black"
       color="blackAlpha.700"
+      _dark={{
+        borderLeftColor: 'white',
+        color: 'white',
+      }}
     >
       <RichText richText={props.quote.text} />
     </chakra.blockquote>

@@ -5,34 +5,24 @@ import {
   Flex,
   HStack,
   Icon,
-  Image,
+  IconButton,
   Link,
   Text,
+  useColorMode,
   VStack,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import {
-  GetServerSideProps,
-  GetStaticPaths,
-  GetStaticProps,
-  NextPage,
-} from "next";
-import NextLink from "next/link";
-import { Notion } from "../components/Notion";
-import { RichText } from "../components/Notion/RichText";
-import {
-  getBlocks,
-  getPage,
-  getPages,
-  toBGColor,
-  useProperty,
-} from "../lib/notion";
-import type { BlockObject, PageObject } from "../lib/notion/types";
-import { Twemoji } from "../components/Twemoji";
-import { Footer } from "../components/Footer";
-import { Head, OGTag } from "../components/Head";
-import { FaGetPocket, FaTwitter } from "react-icons/fa";
-import { hatena, pocket, twitter } from "../lib/share";
+} from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import NextLink from 'next/link';
+import { Notion } from '../components/Notion';
+import { RichText } from '../components/Notion/RichText';
+import { getBlocks, getPage, toBGColor, useProperty } from '../lib/notion';
+import type { BlockObject, PageObject } from '../lib/notion/types';
+import { Twemoji } from '../components/Twemoji';
+import { Footer } from '../components/Footer';
+import { Head, OGTag } from '../components/Head';
+import { FaGetPocket, FaTwitter } from 'react-icons/fa';
+import { hatena, pocket, twitter } from '../lib/share';
 
 type Props = {
   page: PageObject;
@@ -42,7 +32,7 @@ type Props = {
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: 'blocking',
   };
 };
 
@@ -64,28 +54,29 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 const Page: NextPage<Props> = ({ page, content }) => {
-  const title = useProperty(page.properties, "Name", "title");
-  const tags = useProperty(page.properties, "Tags", "multi_select");
-  const created = useProperty(page.properties, "Created", "created_time");
-  const updated = useProperty(page.properties, "Updated", "last_edited_time");
+  const { colorMode, toggleColorMode } = useColorMode();
+  const title = useProperty(page.properties, 'Name', 'title');
+  const tags = useProperty(page.properties, 'Tags', 'multi_select');
+  const created = useProperty(page.properties, 'Created', 'created_time');
+  const updated = useProperty(page.properties, 'Updated', 'last_edited_time');
   const cover = page.cover;
 
   return (
     <Box>
       <Head>
         <title>{`${title.title.map(
-          x => x.plain_text
+          (x) => x.plain_text
         )} - uzimaru's blog`}</title>
       </Head>
       <OGTag
-        title={`${title.title.map(x => x.plain_text)}`}
+        title={`${title.title.map((x) => x.plain_text)}`}
         url={`https://blog.uzimaru.com/${page.id}`}
         type="article"
       />
       {cover && (
         <Box
           bgImage={
-            cover.type === "external" ? cover.external.url : cover.file.url
+            cover.type === 'external' ? cover.external.url : cover.file.url
           }
           bgPos="center"
           bgSize="cover"
@@ -94,20 +85,33 @@ const Page: NextPage<Props> = ({ page, content }) => {
         />
       )}
       <Flex direction="column">
-        <Box zIndex="1" bg="white" w="full" py="8">
+        <Box zIndex="1" w="full" py="8">
           <Container
-            maxWidth={["30em", "30em", "30em", "62em", "62em", "96em"]}
+            maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}
           >
             <VStack alignItems="start" spacing="8" w="full">
-              <VStack alignItems="start" spacing="2">
-                <NextLink href="/">
-                  <Link>
-                    <HStack>
-                      <Twemoji emoji="⬅" h="1em" />
-                      <Text>Topに戻る</Text>
-                    </HStack>
-                  </Link>
-                </NextLink>
+              <VStack alignItems="start" spacing="2" w="full">
+                <HStack w="full" justify="space-between">
+                  <NextLink href="/">
+                    <Link>
+                      <HStack>
+                        <Twemoji emoji="⬅" h="1em" />
+                        <Text>Topに戻る</Text>
+                      </HStack>
+                    </Link>
+                  </NextLink>
+                  <IconButton
+                    aria-label="Toggle color mode"
+                    onClick={toggleColorMode}
+                    icon={
+                      colorMode === 'light' ? (
+                        <Twemoji emoji="🌙" w="1em" />
+                      ) : (
+                        <Twemoji emoji="☀" w="1em" />
+                      )
+                    }
+                  />
+                </HStack>
                 {title && (
                   <Box fontSize="5xl">
                     <RichText as="h1" richText={title.title} />
@@ -118,7 +122,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
                     <HStack spacing="2">
                       <Twemoji emoji="✏️" w="1em" />
                       <Box>
-                        {dayjs(created.created_time).format("YYYY/MM/DD hh:mm")}
+                        {dayjs(created.created_time).format('YYYY/MM/DD hh:mm')}
                       </Box>
                     </HStack>
                   )}
@@ -127,7 +131,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
                       <Twemoji emoji="🔃" w="1em" />
                       <Box>
                         {dayjs(updated.last_edited_time).format(
-                          "YYYY/MM/DD hh:mm"
+                          'YYYY/MM/DD hh:mm'
                         )}
                       </Box>
                     </HStack>
@@ -135,9 +139,14 @@ const Page: NextPage<Props> = ({ page, content }) => {
                 </HStack>
                 {tags && (
                   <HStack>
-                    {tags.multi_select.map(x => (
+                    {tags.multi_select.map((x) => (
                       <NextLink key={x.id} href={`/tags/${x.name}`}>
-                        <Link px="4" bg={toBGColor(x.color)} rounded="full">
+                        <Link
+                          px="4"
+                          bg={toBGColor(x.color)}
+                          color="black"
+                          rounded="full"
+                        >
                           {x.name}
                         </Link>
                       </NextLink>
@@ -146,7 +155,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
                 )}
               </VStack>
               <VStack alignItems="start" w="full">
-                {content.map(x => (
+                {content.map((x) => (
                   <Notion key={x.id} block={x} />
                 ))}
               </VStack>
@@ -159,7 +168,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
               <Link
                 href={twitter(
                   `/${page.id}`,
-                  title ? title.title.map(x => x.plain_text).join("") : ""
+                  title ? title.title.map((x) => x.plain_text).join('') : ''
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -173,7 +182,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
               <Link
                 href={hatena(
                   `/${page.id}`,
-                  title ? title.title.map(x => x.plain_text).join("") : ""
+                  title ? title.title.map((x) => x.plain_text).join('') : ''
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -182,7 +191,7 @@ const Page: NextPage<Props> = ({ page, content }) => {
                 p="3"
                 rounded="full"
                 _hover={{
-                  textDecoration: "none",
+                  textDecoration: 'none',
                 }}
               >
                 <Box

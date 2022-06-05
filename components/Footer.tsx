@@ -1,8 +1,8 @@
-import { Center, HStack, Link, StackProps, Text } from '@chakra-ui/react';
+import { Center, VStack, Link, StackProps, Text } from '@chakra-ui/react';
 
 export const Footer: React.VFC<StackProps> = (props) => {
   return (
-    <HStack
+    <VStack
       as="footer"
       bg="gray.100"
       w="full"
@@ -10,10 +10,20 @@ export const Footer: React.VFC<StackProps> = (props) => {
       justifyContent="center"
       {...props}
     >
-      <Center>
+      <Text color="black">
+        このサイトではアクセス解析のためにcookieを使用した
+        <Link
+          href="https://policies.google.com/technologies/partner-sites"
+          color="blue.400"
+        >
+          Google Analytics
+        </Link>
+        を使用しています。
+      </Text>
+      <Center color="black">
         <Text whiteSpace="break-spaces">© 2022 </Text>
         <Link href="https://twitter.com/uzimaru0000">uzimaru</Link>
       </Center>
-    </HStack>
+    </VStack>
   );
 };

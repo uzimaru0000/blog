@@ -10,7 +10,6 @@ import {
 } from '@chakra-ui/react';
 import { PageObject } from '../lib/notion/types';
 import { useProperty, toBGColor } from '../lib/notion';
-import { RichText } from './Notion/RichText';
 import dayjs from 'dayjs';
 import { Twemoji } from './Twemoji';
 
@@ -32,6 +31,11 @@ export const EntryLink: React.VFC<Props> = ({ page }) => {
       _hover={{
         backgroundColor: 'gray.100',
       }}
+      _dark={{
+        _hover: {
+          backgroundColor: 'gray.900',
+        },
+      }}
     >
       <Stack
         direction={['column', 'column', 'column', 'row']}
@@ -52,7 +56,12 @@ export const EntryLink: React.VFC<Props> = ({ page }) => {
             <HStack>
               {tags.multi_select.map((x) => (
                 <NextLink key={x.id} href={`/tags/${x.name}`} passHref>
-                  <Link px="4" bg={toBGColor(x.color)} rounded="full">
+                  <Link
+                    px="4"
+                    bg={toBGColor(x.color)}
+                    color="black"
+                    rounded="full"
+                  >
                     {x.name}
                   </Link>
                 </NextLink>

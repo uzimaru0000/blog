@@ -18,6 +18,10 @@ export const CallOut: React.VFC<BlockObject> = (props) => {
       borderWidth="1px"
       borderColor={!bg && 'gray.500'}
       rounded="4px"
+      _dark={{
+        bgColor: bg ? toColor(bg) : 'transparent',
+        color: !bg && toBGColor(color),
+      }}
     >
       <HStack spacing="1">
         <Box>

@@ -6,6 +6,8 @@ import {
   Heading,
   Link,
   HStack,
+  IconButton,
+  useColorMode,
 } from '@chakra-ui/react';
 import { GetServerSideProps, NextPage } from 'next';
 import { EntryLink } from '../../components/EntryLink';
@@ -14,6 +16,7 @@ import { Twemoji } from '../../components/Twemoji';
 import { getPages } from '../../lib/notion';
 import { PageObject } from '../../lib/notion/types';
 import NextLink from 'next/link';
+import { Footer } from '../../components/Footer';
 
 type Props = {
   pages: PageObject[];
@@ -58,22 +61,46 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 };
 
 const Tags: NextPage<Props> = ({ pages, tag }) => {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Box paddingY="8">
+    <Box
+      pt="8"
+      minH="100vh"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
       <Head>
         <title>{`${tag} - uzimaru's blog`}</title>
         <meta name="description" content={`${tag} がついた記事の一覧`} />
       </Head>
       <OGTag />
-      <Container maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}>
-        <NextLink href="/">
-          <Link>
-            <HStack>
-              <Twemoji emoji="⬅" h="1em" />
-              <Text>Topに戻る</Text>
-            </HStack>
-          </Link>
-        </NextLink>
+      <Container
+        pb="8"
+        maxWidth={['30em', '30em', '30em', '62em', '62em', '96em']}
+      >
+        <HStack w="full" justify="space-between">
+          <NextLink href="/">
+            <Link>
+              <HStack>
+                <Twemoji emoji="⬅" h="1em" />
+                <Text>Topに戻る</Text>
+              </HStack>
+            </Link>
+          </NextLink>
+          <IconButton
+            aria-label="Toggle color mode"
+            onClick={toggleColorMode}
+            icon={
+              colorMode === 'light' ? (
+                <Twemoji emoji="🌙" w="1em" />
+              ) : (
+                <Twemoji emoji="☀" w="1em" />
+              )
+            }
+          />
+        </HStack>
         <VStack alignItems="start" spacing="8">
           <Heading
             as="h1"
@@ -91,6 +118,7 @@ const Tags: NextPage<Props> = ({ pages, tag }) => {
           </VStack>
         </VStack>
       </Container>
+      <Footer />
     </Box>
   );
 };
