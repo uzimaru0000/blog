@@ -3,13 +3,11 @@ import { getPages } from '../lib/notion';
 import { PageObject } from '../lib/notion/types';
 import {
   Box,
-  Button,
   Container,
   Heading,
   IconButton,
   Text,
   useColorMode,
-  useTheme,
   VStack,
 } from '@chakra-ui/react';
 import { Twemoji } from '../components/Twemoji';
@@ -86,9 +84,7 @@ export default function Home({ pages }: Props) {
           </Heading>
           <VStack alignItems="start" w="full">
             {pages.map((x) => (
-              <>
-                <EntryLink key={x.id} page={x} />
-              </>
+              <EntryLink key={x.id} page={x} />
             ))}
           </VStack>
         </VStack>
