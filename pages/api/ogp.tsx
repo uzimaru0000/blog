@@ -1,10 +1,11 @@
 import { ImageResponse } from '@vercel/og';
+import { loadGoogleFont } from '../../lib/fonts';
 
 export const config = {
   runtime: 'experimental-edge',
 };
 
-export default function handler(req: Request) {
+export default async function handler(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
 
@@ -12,9 +13,30 @@ export default function handler(req: Request) {
     const hasTitle = searchParams.has('title');
     const title = hasTitle ? searchParams.get('title')?.slice(0, 100) : '';
 
+    const notoSansJP = await loadGoogleFont({
+      family: 'Noto Sans JP',
+      weight: 400,
+    });
+    const notoSansJPThin = await loadGoogleFont({
+      family: 'Noto Sans JP',
+      weight: 100,
+    });
+
     return new ImageResponse(<Component title={title} />, {
       width: 1200,
       height: 630,
+      fonts: [
+        {
+          name: 'Noto Sans JP',
+          weight: 100,
+          data: notoSansJPThin,
+        },
+        {
+          name: 'Noto Sans JP',
+          weight: 400,
+          data: notoSansJP,
+        },
+      ],
     });
   } catch (e: any) {
     console.log(`${e.message}`);
@@ -86,13 +108,15 @@ const Component = ({ title }: { title: string }) => {
       >
         <span
           style={{
+            width: '100%',
             fontWeight: '700',
-            fontSize: `${96 / Math.max(title.length / 19, 1)}px`,
+            fontSize: '64px',
+            textAlign: 'center',
           }}
         >
           {title}
         </span>
-        <span style={{ fontWeight: '500', fontSize: '48px' }}>
+        <span style={{ fontWeight: '100', fontSize: '48px' }}>
           {"uzimaru's blog"}
         </span>
       </div>
