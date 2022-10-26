@@ -55,6 +55,7 @@ const Component = ({ title }: { title: string }) => {
         height: '630px',
         position: 'relative',
         overflow: 'hidden',
+        background: 'white',
       }}
     >
       <div
