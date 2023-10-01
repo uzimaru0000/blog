@@ -1,0 +1,21 @@
+---
+import EntryLink from "../components/EntryLink.astro";
+import Layout from "../components/Layout.astro";
+
+const entries = await Astro.locals.runtime.env.BUCKET.list({
+  prefix: "entries/",
+});
+const keys = entries.objects.map((entry) => {
+  return entry.key.split('/')[1]
+});
+---
+
+<Layout>
+  <div class="flex flex-col items-center p-8">
+    {
+      keys.map((x) => {
+        return <EntryLink key={x} />;
+      })
+    }
+  </div>
+</Layout>

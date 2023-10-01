@@ -1,0 +1,6 @@
+account_id = 'fcbf820fb5c1b881d484be78099d6318'
+
+[[r2_buckets]]
+binding = 'BUCKET'
+bucket_name = 'blog'
+preview_bucket_name = 'blog'

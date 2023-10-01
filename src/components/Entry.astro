@@ -1,0 +1,79 @@
+---
+import { Renderer, marked, setOptions } from "marked";
+
+type Props = {
+  title: string;
+  markdown: string;
+};
+
+const { title, markdown } = Astro.props;
+
+const renderer = new Renderer();
+
+// Block Level Renderer
+renderer.code = (code, infoString, escaped) =>
+  `<pre class="bg-gray-100 p-4 rounded"><code>${infoString}${code}</code></pre>`;
+renderer.blockquote = (quote) =>
+  `<blockquote class="border-l-4 border-gray-500 pl-4 italic">${quote}</blockquote>`;
+renderer.html = (html) => `<div class="p-4">${html}</div>`;
+renderer.heading = (text, level) => {
+  const className = {
+    1: "text-4xl",
+    2: "text-3xl",
+    3: "text-2xl",
+    4: "text-xl",
+    5: "text-lg",
+    6: "text-base",
+  }[level];
+
+  return `<h${level} class="${className} font-bold mt-4 mb-2">${text}</h${level}>`;
+};
+renderer.hr = () => `<hr class="my-4 border-t border-gray-400" />`;
+renderer.list = (body, ordered, start) =>
+  `<${ordered ? "ol" : "ul"} class="${
+    ordered ? "list-decimal" : "list-disc"
+  } pl-5" ${ordered ? `start="${start}"` : ""}>${body}</${
+    ordered ? "ol" : "ul"
+  }>`;
+renderer.listitem = (text) => `<li class="mb-1">${text}</li>`;
+renderer.checkbox = (checked) =>
+  `<input type="checkbox" class="form-checkbox text-blue-500" ${
+    checked ? "checked" : ""
+  } />`;
+renderer.paragraph = (text) => `<p class="mb-4">${text}</p>`;
+renderer.table = (header, body) =>
+  `<table class="min-w-full divide-y divide-gray-200"><thead>${header}</thead><tbody>${body}</tbody></table>`;
+renderer.tablerow = (content) => `<tr>${content}</tr>`;
+renderer.tablecell = (content, flags) =>
+  `<td class="px-6 py-4 whitespace-nowrap">${content}</td>`;
+
+// Inline Level Renderer
+renderer.strong = (text) => `<strong class="font-semibold">${text}</strong>`;
+renderer.em = (text) => `<em class="italic">${text}</em>`;
+renderer.codespan = (code) =>
+  `<code class="bg-gray-100 rounded px-1">${code}</code>`;
+renderer.br = () => `<br />`;
+renderer.del = (text) => `<del class="line-through">${text}</del>`;
+renderer.link = (href, title, text) =>
+  `<a class="text-blue-500 hover:underline" href="${href}" title="${
+    title || ""
+  }">${text}</a>`;
+renderer.image = (href, title, text) => {
+  const src = href.replace('..', '')
+  return `<img class="mx-auto rounded" src="${src}" alt="${text}" title="${
+    title || ""
+  }" />`
+}
+renderer.text = (text) => `<span>${text}</span>`;
+
+setOptions({
+  renderer,
+});
+
+const content = marked(markdown);
+---
+
+<div class="flex flex-col space-y-4 p-8">
+  <h1 transition:name='title' class="border-l-8 border-l-green-800 pl-6 text-6xl">{title}</h1>
+  <article set:html={content} />
+</div>
