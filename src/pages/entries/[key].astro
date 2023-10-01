@@ -1,0 +1,24 @@
+---
+import fm from "front-matter";
+import Entry from "../../components/Entry.astro";
+import Layout from "../../components/Layout.astro";
+
+const { key } = Astro.params;
+
+if (!key) {
+  return Response.json({ message: "not found" }, { status: 404 });
+}
+
+const file = await Astro.locals.runtime.env.BUCKET.get(`entries/${key}`);
+if (!file) {
+  return Response.json({ message: "not found" }, { status: 404 });
+}
+
+const text = await file.text();
+
+const { attributes, body } = fm<{ title: string; description: string }>(text);
+---
+
+<Layout>
+  <Entry title={attributes.title} markdown={body} />
+</Layout>

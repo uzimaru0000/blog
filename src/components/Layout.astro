@@ -1,0 +1,22 @@
+---
+import { ViewTransitions } from 'astro:transitions'
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import BaseHead from "./BaseHead.astro";
+import Footer from "./Footer.astro";
+import Header from "./Header.astro";
+---
+
+<!doctype html>
+<html lang="ja" class="h-full">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <ViewTransitions />
+  </head>
+  <body class="flex flex-col h-full">
+    <Header title={SITE_TITLE} />
+    <main class="max-w-5xl m-auto grow w-full">
+        <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
