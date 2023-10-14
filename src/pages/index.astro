@@ -7,7 +7,7 @@ const entries = await Astro.locals.runtime.env.BUCKET.list({
 });
 
 const sortedEntries = [...entries.objects].sort((a, b) => {
-  return a.uploaded.getTime() - b.uploaded.getTime()
+  return b.uploaded.getTime() - a.uploaded.getTime()
 });
 
 const keys = sortedEntries.map((entry) => {
