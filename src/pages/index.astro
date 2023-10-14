@@ -5,7 +5,12 @@ import Layout from "../components/Layout.astro";
 const entries = await Astro.locals.runtime.env.BUCKET.list({
   prefix: "entries/",
 });
-const keys = entries.objects.map((entry) => {
+
+const sortedEntries = [...entries.objects].sort((a, b) => {
+  return a.uploaded.getTime() - b.uploaded.getTime()
+});
+
+const keys = sortedEntries.map((entry) => {
   return entry.key.split('/')[1]
 });
 ---
