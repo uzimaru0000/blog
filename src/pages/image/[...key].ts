@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ params, request, locals }) => {
+export const GET: APIRoute = async ({ params, locals }) => {
     const obj = await locals.runtime.env.BUCKET.get(`image/${params.key}`)
     if (!obj) {
         return new Response(null, { status: 404 })
